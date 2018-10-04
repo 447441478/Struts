@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+	<!-- 使用非execute方法，就必须配置下面这个标签，值为true -->
+	<constant name="struts.enable.DynamicMethodInvocation" value="true" />
+	
+    <package name="default" namespace="/" extends="struts-default">
+        <action name="Login" class="cn.hncu.login.LoginAction">
+            <result name="input">index.jsp</result>
+            <result name="success">/jsps/success.jsp</result>
+            
+        </action>
+        <action name="Login2" class="cn.hncu.login.LoginAction2">
+            <result name="input">index.jsp</result>
+            <result name="success">/jsps/success.jsp</result>
+        </action>
+       	<action name="Login3" class="cn.hncu.login.LoginActionValidator">
+       		<result name="input">/index.jsp</result>
+       		<result name="success">/jsps/success.jsp</result>
+       	</action> 
+    </package>
+    
+    <!-- 不管任何包它的祖先必须是 struts-default 包，否则没有struts功能
+    	 通过namespace把 action进行分模块，比如下面包中的action 必须 是 /show/xxx才能访问
+     -->
+    <package name="show" namespace="/show" extends="struts-default">
+    	<interceptors>
+    		<interceptor name="mi" class="cn.hncu.show.MyInterceptor"></interceptor>
+    	</interceptors>
+    	<action name="message" >
+    		<result>/jsps/show.jsp</result>
+    		<interceptor-ref name="mi"></interceptor-ref>
+    		<interceptor-ref name="defaultStack"></interceptor-ref>
+    	</action>
+    </package>
+    
+</struts>
